@@ -6,9 +6,22 @@ SQLALCHEMY_DATABASE_URL = "sqlite:///./sql_app.db"
 # For PostgreSQL use: "postgresql://user:password@postgresserver/db"
 
 engine = create_engine(
-    SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
+    SQLALCHEMY_DATABASE_URL, 
+    connect_args={
+        "check_same_thread": False,
+        "timeout": 30  # 30 second timeout for database operations
+    },
+    # Enable connection pooling for better concurrency
+    pool_pre_ping=True,
+    pool_recycle=300
 )
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(
+    autocommit=False, 
+    autoflush=False, 
+    bind=engine,
+    # Set isolation level for better transaction handling
+    expire_on_commit=False
+)
 
 Base = declarative_base()
 
