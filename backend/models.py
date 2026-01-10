@@ -40,6 +40,8 @@ class Invoice(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     customer_name = Column(String, nullable=True)
     customer_phone = Column(String, nullable=True) # For WhatsApp
+    table_number = Column(Integer, nullable=True)  # Table number for restaurant orders
+    status = Column(String, default="completed")  # pending, completed
     total_amount = Column(Float)
     payment_mode = Column(String, default="Cash") # Cash, UPI, Card
 
@@ -59,3 +61,21 @@ class InvoiceItem(Base):
     total_price = Column(Float) # (unit_price * quantity) + tax
 
     invoice = relationship("Invoice", back_populates="items")
+
+class Settings(Base):
+    __tablename__ = "settings"
+
+    id = Column(Integer, primary_key=True, index=True)
+    admin_id = Column(Integer, ForeignKey("users.id"), unique=True, nullable=False)
+    hotel_name = Column(String, nullable=True)
+    email = Column(String, nullable=True)
+    phone = Column(String, nullable=True)
+    address = Column(String, nullable=True)
+    bank_name = Column(String, nullable=True)
+    account_number = Column(String, nullable=True)
+    ifsc_code = Column(String, nullable=True)
+    upi_id = Column(String, nullable=True)
+    gst_number = Column(String, nullable=True)
+    total_tables = Column(Integer, default=10)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

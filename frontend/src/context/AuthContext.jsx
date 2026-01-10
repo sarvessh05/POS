@@ -32,15 +32,34 @@ export const AuthProvider = ({ children }) => {
         formData.append('password', password);
 
         try {
+            console.log('=== LOGIN ATTEMPT ===');
+            console.log('API Base URL:', api.defaults.baseURL);
+            console.log('Username:', username);
+            console.log('Password length:', password.length);
+            
             const response = await api.post('/token', formData);
+            
+            console.log('=== LOGIN SUCCESS ===');
+            console.log('Access token received:', response.data.access_token ? 'Yes' : 'No');
+            
             localStorage.setItem('token', response.data.access_token);
             await fetchUser();
             return true;
         } catch (error) {
-            console.error("Login failed detailed:", error);
+            console.error("=== LOGIN FAILED ===");
+            console.error("Error type:", error.constructor.name);
+            console.error("Error message:", error.message);
+            
             if (error.response) {
-                console.error("Response data:", error.response.data);
-                console.error("Response status:", error.response.status);
+                console.error("Response received from server:");
+                console.error("  Status:", error.response.status);
+                console.error("  Data:", error.response.data);
+            } else if (error.request) {
+                console.error("No response received from server");
+                console.error("  Request was made to:", error.config?.url);
+                console.error("  Request details:", error.request);
+            } else {
+                console.error("Error setting up request:", error.message);
             }
             return false;
         }

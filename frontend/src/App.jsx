@@ -7,10 +7,11 @@ import DashboardRedirect from './components/DashboardRedirect';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import SystemDashboard from './pages/SystemDashboard';
-import POS from './pages/POS';
+import POS from './pages/POSNew';
 import Items from './pages/Items';
 import History from './pages/History';
 import AdminManagement from './pages/AdminManagement';
+import Settings from './pages/Settings';
 import './index.css';
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
               <Route path="/pos" element={<POS />} />
               <Route path="/items" element={<Items />} />
               <Route path="/history" element={<History />} />
+              <Route path="/settings" element={<Settings />} />
               <Route path="/admin" element={<AdminManagement />} />
             </Route>
 

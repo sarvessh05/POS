@@ -23,7 +23,7 @@ const History = () => {
 
     const shareWhatsApp = (invoice, e) => {
         e.stopPropagation();
-        const message = `*Invoice #${invoice.invoice_number}*\nDate: ${new Date(invoice.created_at).toLocaleDateString()}\nAmount: $${invoice.total_amount.toFixed(2)}\n\nThank you for your business!`;
+        const message = `*Invoice #${invoice.invoice_number}*\nDate: ${new Date(invoice.created_at).toLocaleDateString()}\nAmount: ₹${invoice.total_amount.toFixed(2)}\n\nThank you for your business!`;
         const url = `https://wa.me/${invoice.customer_phone || ''}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
     };
@@ -96,7 +96,7 @@ const History = () => {
                                         <tr key={idx} className="border-b border-gray-50 last:border-none">
                                             <td className="p-3 text-gray-700 font-medium">{item.item_name}</td>
                                             <td className="p-3 text-center text-muted">{item.quantity}</td>
-                                            <td className="p-3 text-right text-gray-800 font-bold">${(item.unit_price * item.quantity).toFixed(2)}</td>
+                                            <td className="p-3 text-right text-gray-800 font-bold">₹{(item.unit_price * item.quantity).toFixed(2)}</td>
                                         </tr>
                                     ))}
                                     {(!invoice.items || invoice.items.length === 0) && (
@@ -112,7 +112,7 @@ const History = () => {
                     <div className="modal-footer">
                         <div className="flex justify-between items-center mb-4">
                             <span className="text-muted font-medium text-sm">Total Amount</span>
-                            <span className="text-xl font-bold text-indigo-600">${invoice.total_amount.toFixed(2)}</span>
+                            <span className="text-xl font-bold text-indigo-600">₹{invoice.total_amount.toFixed(2)}</span>
                         </div>
                         <div className="flex gap-2">
                             <button
@@ -219,7 +219,7 @@ const History = () => {
                                         </td>
                                         <td className="text-right">
                                             <span className="font-bold text-gray-900">
-                                                ${inv.total_amount.toFixed(2)}
+                                                ₹{inv.total_amount.toFixed(2)}
                                             </span>
                                         </td>
                                         <td className="text-center">

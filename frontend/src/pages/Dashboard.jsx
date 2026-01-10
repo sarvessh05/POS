@@ -20,8 +20,23 @@ const Dashboard = () => {
             fetchStats();
         }, 30000);
 
-        // Cleanup interval on unmount
-        return () => clearInterval(interval);
+        // Check for day change every minute and refresh
+        const checkDayChange = setInterval(() => {
+            const now = new Date();
+            const lastCheck = localStorage.getItem('lastDashboardCheck');
+            const lastCheckDate = lastCheck ? new Date(lastCheck) : null;
+            
+            if (!lastCheckDate || lastCheckDate.getDate() !== now.getDate()) {
+                fetchStats();
+                localStorage.setItem('lastDashboardCheck', now.toISOString());
+            }
+        }, 60000); // Check every minute
+
+        // Cleanup intervals on unmount
+        return () => {
+            clearInterval(interval);
+            clearInterval(checkDayChange);
+        };
     }, []);
 
     const fetchStats = async () => {
@@ -89,7 +104,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-auto-fit gap-6 mb-8">
                     <StatCard
                         title="Total Revenue"
-                        value={`$${stats.totalRevenue.toFixed(2)}`}
+                        value={`₹${stats.totalRevenue.toFixed(2)}`}
                         subtitle="All-time sales"
                         icon={DollarSign}
                         color="#10b981"
@@ -103,7 +118,7 @@ const Dashboard = () => {
                     />
                     <StatCard
                         title="Avg Order Value"
-                        value={`$${stats.avgOrderValue.toFixed(2)}`}
+                        value={`₹${stats.avgOrderValue.toFixed(2)}`}
                         subtitle="Per invoice"
                         icon={TrendingUp}
                         color="#f59e0b"
@@ -123,7 +138,7 @@ const Dashboard = () => {
                     <div className="grid grid-cols-auto-fit gap-6">
                         <div>
                             <p className="text-sm text-muted mb-2">Today's Revenue</p>
-                            <h3 className="text-xl font-bold text-green-600">${stats.todayRevenue.toFixed(2)}</h3>
+                            <h3 className="text-xl font-bold text-green-600">₹{stats.todayRevenue.toFixed(2)}</h3>
                         </div>
                         <div>
                             <p className="text-sm text-muted mb-2">Today's Orders</p>
@@ -132,7 +147,7 @@ const Dashboard = () => {
                         <div>
                             <p className="text-sm text-muted mb-2">Today's Average</p>
                             <h3 className="text-xl font-bold text-purple-600">
-                                ${stats.todayOrders > 0 ? (stats.todayRevenue / stats.todayOrders).toFixed(2) : '0.00'}
+                                ₹{stats.todayOrders > 0 ? (stats.todayRevenue / stats.todayOrders).toFixed(2) : '0.00'}
                             </h3>
                         </div>
                     </div>
@@ -144,7 +159,7 @@ const Dashboard = () => {
                     <div className="space-y-3">
                         <div className="flex justify-between items-center p-3 bg-slate-50 rounded">
                             <span className="text-sm font-medium">Total Revenue</span>
-                            <span className="font-bold text-green-600">${stats.totalRevenue.toFixed(2)}</span>
+                            <span className="font-bold text-green-600">₹{stats.totalRevenue.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between items-center p-3 bg-slate-50 rounded">
                             <span className="text-sm font-medium">Total Orders</span>
@@ -152,7 +167,7 @@ const Dashboard = () => {
                         </div>
                         <div className="flex justify-between items-center p-3 bg-slate-50 rounded">
                             <span className="text-sm font-medium">Average Order Value</span>
-                            <span className="font-bold text-purple-600">${stats.avgOrderValue.toFixed(2)}</span>
+                            <span className="font-bold text-purple-600">₹{stats.avgOrderValue.toFixed(2)}</span>
                         </div>
                         <div className="flex justify-between items-center p-3 bg-slate-50 rounded">
                             <span className="text-sm font-medium">Items in Inventory</span>

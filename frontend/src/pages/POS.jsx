@@ -3,6 +3,7 @@ import api from '../api';
 import { useCart } from '../context/CartContext';
 import { Search, Plus, Minus, Trash2, ShoppingCart, Grid, Package, Smartphone, FileText } from 'lucide-react';
 import { downloadInvoicePDF } from '../utils/pdfGenerator';
+import { formatCurrency } from '../utils/currency';
 
 const POS = () => {
     const [items, setItems] = useState([]);
@@ -12,6 +13,8 @@ const POS = () => {
     const [activeCategory, setActiveCategory] = useState("All");
     const [customerName, setCustomerName] = useState("");
     const [customerPhone, setCustomerPhone] = useState("");
+    const [tableNumber, setTableNumber] = useState("");
+    const [totalTables, setTotalTables] = useState(10);
     const [lastInvoice, setLastInvoice] = useState(null);
 
     // Generate sequential invoice number
@@ -31,7 +34,18 @@ const POS = () => {
                 console.error(e);
             }
         };
+        
+        const fetchSettings = async () => {
+            try {
+                const res = await api.get('/settings/');
+                setTotalTables(res.data.total_tables || 10);
+            } catch (e) {
+                console.error('No settings found, using default');
+            }
+        };
+        
         fetchItems();
+        fetchSettings();
     }, []);
 
     const categories = ["All", ...new Set(items.map(i => i.category))];
@@ -48,6 +62,7 @@ const POS = () => {
             const payload = {
                 customer_name: customerName || "Walk-in Customer",
                 customer_phone: customerPhone || "",
+                table_number: tableNumber ? parseInt(tableNumber) : null,
                 payment_mode: "Cash",
                 items: cartItems.map(i => ({
                     item_id: i.id,
@@ -63,6 +78,7 @@ const POS = () => {
             clearCart();
             setCustomerName("");
             setCustomerPhone("");
+            setTableNumber("");
 
             // Show success message with WhatsApp option
             if (customerPhone) {
@@ -103,7 +119,7 @@ Thank you for choosing us! 😊
 I've prepared your invoice for *Invoice #${invoice.invoice_number}*.
 
 📄 *Invoice Details:*
-• Total Amount: *$${invoice.total_amount.toFixed(2)}*
+• Total Amount: *₹${invoice.total_amount.toFixed(2)}*
 • Date: ${new Date(invoice.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
 
 📎 *Please find the PDF invoice attached below* (check your downloads folder and attach it here)
@@ -188,7 +204,7 @@ Best regards,
                                         {item.name.charAt(0)}
                                     </div>
                                     <span className="price-badge">
-                                        ${item.price}
+                                        ₹{item.price}
                                     </span>
                                 </div>
 
@@ -234,12 +250,12 @@ Best regards,
                             <div key={item.id} className="cart-item">
                                 <div className="flex justify-between mb-2">
                                     <h4 style={{ fontSize: '0.875rem', fontWeight: 600, color: '#1e293b' }}>{item.name}</h4>
-                                    <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1e293b' }}>${(item.price * item.qty).toFixed(2)}</span>
+                                    <span style={{ fontSize: '0.875rem', fontWeight: 700, color: '#1e293b' }}>₹{(item.price * item.qty).toFixed(2)}</span>
                                 </div>
 
                                 <div className="flex justify-between items-center">
                                     <div className="text-xs text-muted">
-                                        ${item.price} / unit
+                                        ₹{item.price} / unit
                                     </div>
 
                                     <div className="flex items-center" style={{ border: '1px solid #e2e8f0', background: 'white' }}>
@@ -293,6 +309,19 @@ Best regards,
                                     onChange={(e) => setCustomerPhone(e.target.value)}
                                     style={{ fontSize: '0.875rem', padding: '0.5rem 0.75rem' }}
                                 />
+                                <select
+                                    className="input"
+                                    value={tableNumber}
+                                    onChange={(e) => setTableNumber(e.target.value)}
+                                    style={{ fontSize: '0.875rem', padding: '0.5rem 0.75rem' }}
+                                >
+                                    <option value="">Select Table (Optional)</option>
+                                    {[...Array(totalTables)].map((_, i) => (
+                                        <option key={i + 1} value={i + 1}>
+                                            Table {i + 1}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
                             {customerPhone && (
                                 <p className="text-xs text-muted mt-2" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
@@ -305,15 +334,15 @@ Best regards,
                     <div className="mb-4">
                         <div className="summary-row">
                             <span>Subtotal</span>
-                            <span>${cartTotal.toFixed(2)}</span>
+                            <span>₹{cartTotal.toFixed(2)}</span>
                         </div>
                         <div className="summary-row">
-                            <span>Tax (10%)</span>
-                            <span>${cartTax.toFixed(2)}</span>
+                            <span>Tax:</span>
+                            <span>₹{cartTax.toFixed(2)}</span>
                         </div>
-                        <div className="total-row">
-                            <span>Total</span>
-                            <span>${(cartTotal + cartTax).toFixed(2)}</span>
+                        <div className="summary-row summary-total">
+                            <span>Total:</span>
+                            <span>₹{(cartTotal + cartTax).toFixed(2)}</span>
                         </div>
                     </div>
 

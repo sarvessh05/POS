@@ -327,7 +327,7 @@ p {
 .main-content {
   flex: 1;
   background: var(--bg-color);
-  overflow: hidden;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
@@ -653,20 +653,32 @@ p {
   overflow-x: auto;
 }
 
+.category-tabs {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
 .category-tab {
-  padding: 1rem 0;
+  padding: 0.5rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  border-bottom: 2px solid transparent;
+  border-radius: 20px;
   color: var(--text-muted);
-  background: none;
+  background: #f1f5f9;
   border: none;
   cursor: pointer;
+  transition: all 0.2s;
+}
+
+.category-tab:hover {
+  background: #e2e8f0;
 }
 
 .category-tab.active {
-  border-bottom-color: var(--accent-color);
-  color: var(--accent-color);
+  background: var(--accent-color);
+  color: white;
 }
 
 .pos-grid-area {
@@ -1011,4 +1023,102 @@ p {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+/* Settings Page Styles */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: var(--text-main);
+  font-size: 0.875rem;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  color: var(--text-main);
+  background: var(--card-bg);
+  transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--accent-color);
+}
+
+.form-group small {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  padding-top: 1rem;
+}
+
+.alert {
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  margin-top: 1rem;
+}
+
+.alert-success {
+  background-color: #d1fae5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.alert-error {
+  background-color: #fee2e2;
+  color: #991b1b;
+  border: 1px solid #fca5a5;
+}
+
+/* Header and Content Styles */
+.header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  background: white;
+  flex-shrink: 0;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.content-body {
+  flex: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
 }
