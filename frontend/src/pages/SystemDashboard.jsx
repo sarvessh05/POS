@@ -162,7 +162,7 @@ const SystemDashboard = () => {
                         <div className="flex items-center justify-between">
                             <div>
                                 <p className="text-sm text-muted mb-2">Total Revenue</p>
-                                <h2 className="text-2xl font-bold">${stats.totalRevenue.toFixed(2)}</h2>
+                                <h2 className="text-2xl font-bold">₹{stats.totalRevenue.toFixed(2)}</h2>
                                 <p className="text-xs text-muted mt-1">All-time sales</p>
                             </div>
                             <div className="p-3" style={{ background: '#d1fae5' }}>
@@ -205,7 +205,7 @@ const SystemDashboard = () => {
                             <div>
                                 <p className="text-sm text-muted mb-2">Avg Order Value</p>
                                 <h2 className="text-2xl font-bold">
-                                    ${stats.totalInvoices > 0 ? (stats.totalRevenue / stats.totalInvoices).toFixed(2) : '0.00'}
+                                    ₹{stats.totalInvoices > 0 ? (stats.totalRevenue / stats.totalInvoices).toFixed(2) : '0.00'}
                                 </h2>
                                 <p className="text-xs text-muted mt-1">Per invoice</p>
                             </div>
@@ -246,7 +246,7 @@ const SystemDashboard = () => {
                                             </span>
                                         </td>
                                         <td className="font-bold text-green-600">
-                                            {u.role === 'admin' ? `$${u.totalRevenue.toFixed(2)}` : '-'}
+                                            {u.role === 'admin' ? `₹${u.totalRevenue.toFixed(2)}` : '-'}
                                         </td>
                                         <td className="text-center">
                                             {u.role === 'admin' ? u.totalInvoices : '-'}
@@ -286,7 +286,7 @@ const SystemDashboard = () => {
                                         <tr key={inv.id}>
                                             <td className="font-medium">{inv.invoice_number}</td>
                                             <td>{inv.customer_name || 'Walk-in Customer'}</td>
-                                            <td className="font-bold text-green-600">${inv.total_amount.toFixed(2)}</td>
+                                            <td className="font-bold text-green-600">₹{inv.total_amount.toFixed(2)}</td>
                                             <td>
                                                 <span className="badge bg-blue-500">{inv.payment_mode}</span>
                                             </td>

@@ -58,6 +58,8 @@ class InvoiceItemCreate(BaseModel):
 class InvoiceCreate(BaseModel):
     customer_name: Optional[str] = None
     customer_phone: Optional[str] = None
+    table_number: Optional[int] = None
+    status: str = "completed"  # pending or completed
     payment_mode: str = "Cash"
     items: List[InvoiceItemCreate]
 
@@ -74,6 +76,8 @@ class InvoiceResponse(BaseModel):
     created_at: datetime
     customer_name: Optional[str]
     customer_phone: Optional[str]
+    table_number: Optional[int]
+    status: str
     total_amount: float
     payment_mode: str
     items: List[InvoiceItemResponse]
@@ -86,3 +90,30 @@ class Token(BaseModel):
 
 class TokenData(BaseModel):
     username: Optional[str] = None
+
+# --- Settings Schemas ---
+class SettingsBase(BaseModel):
+    hotel_name: Optional[str] = None
+    email: Optional[str] = None
+    phone: Optional[str] = None
+    address: Optional[str] = None
+    bank_name: Optional[str] = None
+    account_number: Optional[str] = None
+    ifsc_code: Optional[str] = None
+    upi_id: Optional[str] = None
+    gst_number: Optional[str] = None
+    total_tables: int = 10
+
+class SettingsCreate(SettingsBase):
+    pass
+
+class SettingsUpdate(SettingsBase):
+    pass
+
+class SettingsResponse(SettingsBase):
+    id: int
+    admin_id: int
+    created_at: datetime
+    updated_at: datetime
+    class Config:
+        from_attributes = True

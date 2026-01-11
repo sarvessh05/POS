@@ -87,8 +87,8 @@ export const generateInvoicePDF = (invoice) => {
         doc.text(`${index + 1}`, 25, yPos);
         doc.text(item.item_name, 35, yPos);
         doc.text(`${item.quantity}`, 120, yPos);
-        doc.text(`$${item.unit_price.toFixed(2)}`, 145, yPos);
-        doc.text(`$${total.toFixed(2)}`, 170, yPos);
+        doc.text(`₹${item.unit_price.toFixed(2)}`, 145, yPos);
+        doc.text(`₹${total.toFixed(2)}`, 170, yPos);
 
         yPos += 8;
     });
@@ -123,12 +123,12 @@ export const generateInvoicePDF = (invoice) => {
     doc.setFont('helvetica', 'normal');
     doc.setTextColor(71, 85, 105);
     doc.text('Subtotal:', summaryBoxX + 5, yPos);
-    doc.text(`$${subtotal.toFixed(2)}`, summaryBoxX + summaryBoxWidth - 5, yPos, { align: 'right' });
+    doc.text(`₹${subtotal.toFixed(2)}`, summaryBoxX + summaryBoxWidth - 5, yPos, { align: 'right' });
 
     // Tax row
     yPos += 7;
     doc.text('Tax (10%):', summaryBoxX + 5, yPos);
-    doc.text(`$${taxAmount.toFixed(2)}`, summaryBoxX + summaryBoxWidth - 5, yPos, { align: 'right' });
+    doc.text(`₹${taxAmount.toFixed(2)}`, summaryBoxX + summaryBoxWidth - 5, yPos, { align: 'right' });
 
     // Divider line before total
     yPos += 5;
@@ -148,7 +148,7 @@ export const generateInvoicePDF = (invoice) => {
     doc.setTextColor(79, 70, 229);
     doc.text('TOTAL:', summaryBoxX + 5, yPos);
     doc.setFontSize(14);
-    doc.text(`$${invoice.total_amount.toFixed(2)}`, summaryBoxX + summaryBoxWidth - 5, yPos, { align: 'right' });
+    doc.text(`₹${invoice.total_amount.toFixed(2)}`, summaryBoxX + summaryBoxWidth - 5, yPos, { align: 'right' });
 
     // Payment Method - Below the box
     yPos += 12;

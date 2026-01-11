@@ -56,6 +56,11 @@ const Sidebar = () => {
                                 <span>Items</span>
                             </NavLink>
                         )}
+
+                        <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+                            <Settings size={20} />
+                            <span>Settings</span>
+                        </NavLink>
                     </>
                 )}
 

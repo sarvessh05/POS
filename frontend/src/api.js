@@ -1,7 +1,12 @@
 import axios from 'axios';
 
+// API base URL - backend server
+const API_BASE_URL = 'http://localhost:8001';
+
+console.log('API Module loaded - Base URL:', API_BASE_URL);
+
 const api = axios.create({
-    baseURL: 'http://localhost:8000',
+    baseURL: API_BASE_URL,
 });
 
 // Request interceptor - Add token to requests
