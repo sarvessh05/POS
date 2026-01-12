@@ -1,11 +1,16 @@
-import React, { createContext, useState, useContext, useMemo } from 'react';
+import React, { createContext, useState, useContext, useMemo, useCallback } from 'react';
 
 const CartContext = createContext(null);
 
 export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState([]);
+    const [isUpdating, setIsUpdating] = useState(false);
 
-    const addToCart = (item) => {
+    // Debounced addToCart to prevent rapid-fire additions
+    const addToCart = useCallback((item) => {
+        if (isUpdating) return; // Prevent rapid clicks
+        
+        setIsUpdating(true);
         setCartItems(prev => {
             const existing = prev.find(i => i.id === item.id);
             if (existing) {
@@ -13,7 +18,10 @@ export const CartProvider = ({ children }) => {
             }
             return [...prev, { ...item, qty: 1 }];
         });
-    };
+        
+        // Reset updating flag after a short delay
+        setTimeout(() => setIsUpdating(false), 200);
+    }, [isUpdating]);
 
     const removeFromCart = (itemId) => {
         setCartItems(prev => prev.filter(i => i.id !== itemId));

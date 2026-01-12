@@ -57,6 +57,10 @@ const POS = () => {
 
     const handleCheckout = async () => {
         if (cartItems.length === 0) return;
+        
+        // Prevent double-clicks and rapid submissions
+        if (loading) return;
+        
         setLoading(true);
         try {
             const payload = {
@@ -93,7 +97,15 @@ const POS = () => {
             }
         } catch (e) {
             console.error(e);
-            alert("Checkout Failed");
+            
+            // Handle specific error cases
+            if (e.response?.status === 400 && e.response?.data?.detail?.includes("stock")) {
+                alert(`Stock Error: ${e.response.data.detail}`);
+            } else if (e.response?.status === 409) {
+                alert("Invoice processing conflict. Please try again.");
+            } else {
+                alert("Checkout Failed. Please try again.");
+            }
         } finally {
             setLoading(false);
         }
