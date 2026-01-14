@@ -53,7 +53,7 @@ class InvoiceItemCreate(BaseModel):
     item_name: str
     quantity: int
     unit_price: float
-    tax_amount: float
+    tax_amount: float  # Client may send this, but server will recompute for integrity
 
 class InvoiceCreate(BaseModel):
     customer_name: Optional[str] = None
@@ -61,6 +61,8 @@ class InvoiceCreate(BaseModel):
     table_number: Optional[int] = None
     status: str = "completed"  # pending or completed
     payment_mode: str = "Cash"
+    discount_percent: Optional[float] = 0.0  # Applied on subtotal before tax
+    discount_amount: Optional[float] = 0.0   # Overrides percent if provided (>0)
     items: List[InvoiceItemCreate]
 
 class InvoiceItemResponse(InvoiceItemCreate):
