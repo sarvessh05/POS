@@ -27,6 +27,18 @@ export const CartProvider = ({ children }) => {
         setCartItems(prev => prev.map(i => i.id === itemId ? { ...i, qty } : i));
     };
 
+    const setCartFromInvoice = (invoice) => {
+        // Map invoice items to cart format
+        const mapped = (invoice.items || []).map(it => ({
+            id: it.item_id ?? undefined,
+            name: it.item_name,
+            price: it.unit_price,
+            qty: it.quantity,
+            tax_rate: undefined,
+        }));
+        setCartItems(mapped);
+    };
+
     const clearCart = () => setCartItems([]);
 
     const cartTotal = useMemo(() => {
@@ -39,7 +51,7 @@ export const CartProvider = ({ children }) => {
     }, [cartItems]);
 
     return (
-        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQty, clearCart, cartTotal, cartTax }}>
+        <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, updateQty, clearCart, setCartFromInvoice, cartTotal, cartTax }}>
             {children}
         </CartContext.Provider>
     );

@@ -8,7 +8,7 @@ import { formatCurrency } from '../utils/currency';
 const POS = () => {
     const [items, setItems] = useState([]);
     const [search, setSearch] = useState("");
-    const { cartItems, addToCart, removeFromCart, updateQty, cartTotal, cartTax, clearCart } = useCart();
+    const { cartItems, addToCart, removeFromCart, updateQty, cartTotal, cartTax, clearCart, setCartFromInvoice } = useCart();
     const [loading, setLoading] = useState(false);
     const [activeCategory, setActiveCategory] = useState("All");
     const [customerName, setCustomerName] = useState("");
@@ -16,6 +16,8 @@ const POS = () => {
     const [tableNumber, setTableNumber] = useState("");
     const [totalTables, setTotalTables] = useState(10);
     const [lastInvoice, setLastInvoice] = useState(null);
+    const [discountPercent, setDiscountPercent] = useState('');
+    const [discountAmount, setDiscountAmount] = useState('');
 
     // Generate sequential invoice number
     const generateInvoiceNumber = () => {
@@ -64,6 +66,8 @@ const POS = () => {
                 customer_phone: customerPhone || "",
                 table_number: tableNumber ? parseInt(tableNumber) : null,
                 payment_mode: "Cash",
+                discount_percent: discountPercent ? parseFloat(discountPercent) : 0,
+                discount_amount: discountAmount ? parseFloat(discountAmount) : 0,
                 items: cartItems.map(i => ({
                     item_id: i.id,
                     item_name: i.name,
@@ -79,8 +83,9 @@ const POS = () => {
             setCustomerName("");
             setCustomerPhone("");
             setTableNumber("");
+            setDiscountPercent('');
+            setDiscountAmount('');
 
-            // Show success message with WhatsApp option
             if (customerPhone) {
                 const sendWhatsApp = window.confirm(
                     `Invoice Created: ${res.data.invoice_number}\n\nWould you like to send this invoice via WhatsApp?`
@@ -340,8 +345,18 @@ Best regards,
                             <span>Tax:</span>
                             <span>₹{cartTax.toFixed(2)}</span>
                         </div>
+                        <div className="summary-row">
+                            <span>Discount %</span>
+                            <input className="input" type="number" min="0" max="100" step="0.01" value={discountPercent}
+                                onChange={e => setDiscountPercent(e.target.value)} placeholder="e.g., 10" style={{ width: '120px' }} />
+                        </div>
+                        <div className="summary-row">
+                            <span>Discount Amt</span>
+                            <input className="input" type="number" min="0" step="0.01" value={discountAmount}
+                                onChange={e => setDiscountAmount(e.target.value)} placeholder="e.g., 50" style={{ width: '120px' }} />
+                        </div>
                         <div className="summary-row summary-total">
-                            <span>Total:</span>
+                            <span>Total (client est.):</span>
                             <span>₹{(cartTotal + cartTax).toFixed(2)}</span>
                         </div>
                     </div>
@@ -437,13 +452,82 @@ Best regards,
                         </button>
                     )}
 
-                    <button
-                        className="btn w-full"
-                        onClick={handleCheckout}
-                        disabled={loading || cartItems.length === 0}
-                    >
-                        {loading ? 'Processing...' : 'COMPLETE ORDER'}
-                    </button>
+                    <div className="flex flex-col gap-2">
+                        <button
+                            className="btn-secondary w-full"
+                            onClick={async () => {
+                                if (!tableNumber) {
+                                    alert('Select a table to save as pending');
+                                    return;
+                                }
+                                setLoading(true);
+                                try {
+                                    const payload = {
+                                        customer_name: customerName || "Walk-in Customer",
+                                        customer_phone: customerPhone || "",
+                                        table_number: parseInt(tableNumber),
+                                        payment_mode: "Cash",
+                                        status: 'pending',
+                                        discount_percent: discountPercent ? parseFloat(discountPercent) : 0,
+                                        discount_amount: discountAmount ? parseFloat(discountAmount) : 0,
+                                        items: cartItems.map(i => ({
+                                            item_id: i.id,
+                                            item_name: i.name,
+                                            quantity: i.qty,
+                                            unit_price: i.price,
+                                            tax_amount: (i.price * i.qty * (i.tax_rate || 0))
+                                        }))
+                                    };
+                                    const res = await api.post('/invoices/', payload);
+                                    setLastInvoice(res.data);
+                                    alert(`Saved pending order for Table ${tableNumber}`);
+                                } catch (e) {
+                                    console.error(e);
+                                    alert('Failed to save pending order');
+                                } finally {
+                                    setLoading(false);
+                                }
+                            }}
+                            disabled={loading || cartItems.length === 0}
+                        >
+                            Save as Pending
+                        </button>
+
+                        <button
+                            className="btn-secondary w-full"
+                            onClick={async () => {
+                                if (!tableNumber) {
+                                    alert('Select a table to load pending order');
+                                    return;
+                                }
+                                try {
+                                    const res = await api.get('/invoices/pending');
+                                    const inv = (res.data || []).find(x => String(x.table_number) === String(tableNumber));
+                                    if (!inv) {
+                                        alert(`No pending order found for Table ${tableNumber}`);
+                                        return;
+                                    }
+                                    setCustomerName(inv.customer_name || '');
+                                    setCustomerPhone(inv.customer_phone || '');
+                                    setCartFromInvoice(inv);
+                                    setLastInvoice(inv);
+                                } catch (e) {
+                                    console.error(e);
+                                    alert('Failed to load pending order');
+                                }
+                            }}
+                        >
+                            Load Pending for Table
+                        </button>
+
+                        <button
+                            className="btn w-full"
+                            onClick={handleCheckout}
+                            disabled={loading || cartItems.length === 0}
+                        >
+                            {loading ? 'Processing...' : 'COMPLETE ORDER'}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
