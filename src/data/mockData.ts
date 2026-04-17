@@ -1,24 +1,25 @@
+// Images are now served from the public/assets/food directory for Supabase compatibility
 import { MenuItem, Category, Order, TableBooking } from '@/types';
-import dimsumimg from '@/assets/food/dimsum.png';
-import burgerimg from '@/assets/food/burger.png';
-import cakeimg from '@/assets/food/cake.png';
-import cocktailimg from '@/assets/food/cocktail.png';
-import paneerTikkaImg from '@/assets/food/paneer-tikka.png';
-import chickenTikkaImg from '@/assets/food/chicken-tikka.png';
-import butterChickenImg from '@/assets/food/butter-chicken.png';
-import dalMakhaniImg from '@/assets/food/dal-makhani.png';
-import hyderabadiBiryaniImg from '@/assets/food/hyderabadi-biryani.png';
-import vegBiryaniImg from '@/assets/food/veg-biryani.png';
-import gulabJamunImg from '@/assets/food/gulab-jamun.png';
-import mangoLassiImg from '@/assets/food/mango-lassi.png';
-import muttonKebabImg from '@/assets/food/mutton-kebab.png';
-import fishFingersImg from '@/assets/food/fish-fingers.png';
-import tandooriPrawnsImg from '@/assets/food/tandoori-prawns.png';
-import lambRoganJoshImg from '@/assets/food/lamb-rogan-josh.png';
-import fishCurryImg from '@/assets/food/fish-curry.png';
-import chickenChettinadImg from '@/assets/food/chicken-chettinad.png';
-import muttonBiryaniImg from '@/assets/food/mutton-biryani.png';
-import prawnBiryaniImg from '@/assets/food/prawn-biryani.png';
+const dimsumimg = '/assets/food/dimsum.png';
+const burgerimg = '/assets/food/burger.png';
+const cakeimg = '/assets/food/cake.png';
+const cocktailimg = '/assets/food/cocktail.png';
+const paneerTikkaImg = '/assets/food/Paneer tikka.jpg';
+const chickenTikkaImg = '/assets/food/Chicken Tikka Fry.jpg';
+const butterChickenImg = '/assets/food/Butter Chicken.jpg';
+const dalMakhaniImg = '/assets/food/Dal Makhani.jpg';
+const hyderabadiBiryaniImg = '/assets/food/Prawns Biryani.jpg';
+const vegBiryaniImg = '/assets/food/Crop.jpg';
+const gulabJamunImg = '/assets/food/Gulab Jamun.jpg';
+const mangoLassiImg = '/assets/food/Mango Lassi.jpg';
+const muttonKebabImg = '/assets/food/Mutton Seekh Kababa.jpg';
+const fishFingersImg = '/assets/food/Crispy golden Fish Fingers.jpg';
+const tandooriPrawnsImg = '/assets/food/Prawns tikka.jpg';
+const lambRoganJoshImg = '/assets/food/Mutton Rogan Josh.jpg';
+const fishCurryImg = '/assets/food/Goan Fish Curry.jpg';
+const chickenChettinadImg = '/assets/food/Chicken Tikka Fry.jpg';
+const muttonBiryaniImg = '/assets/food/Lucknowi Mutton Biryani.jpg';
+const prawnBiryaniImg = '/assets/food/Prawns Biryani.jpg';
 
 export const categories: Category[] = [
   { id: '1', name: 'Starters', icon: '🥗', count: 15 },
