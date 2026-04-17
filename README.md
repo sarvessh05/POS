@@ -1,64 +1,124 @@
-# Spice Haven - Fine Dining Restaurant
+# 🌶️ Spice Haven | Next-Gen Restaurant POS Ecosystem
 
-A modern, responsive web application for Spice Haven, a fine dining restaurant specializing in authentic Indian cuisine.
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.io/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-## Features
+**Spice Haven** is a high-performance, full-stack Point of Sale (POS) and Restaurant Management System designed for precision, speed, and luxury. Built with a modern tech stack, it provides a seamless experience for customers, waitstaff (Captains), and administrators.
 
-- **Store Front**: Browse our extensive menu of authentic flavors.
-- **Online Ordering**: Conveniently order your favorite dishes online.
-- **Table Booking**: Reserve your table with ease.
-- **Exclusive Rewards**: Join our loyalty program for special offers and rewards.
-- **Mobile Responsive**: Optimized for all devices.
+---
 
-## Tech Stack
+## 🏛️ System Architecture
 
-- **Frontend**: React with TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS & shadcn/ui
-- **Backend Integration**: Supabase
-- **State Management**: TanStack Query (React Query)
-- **Forms**: React Hook Form with Zod validation
-- **Icons**: Lucide React
+The ecosystem is divided into three specialized portals, each optimized for its specific user base:
 
-## Getting Started
+### 1. 🍽️ Customer Experience Portal
+A premium "Store Front" where diners can explore the menu with high-fidelity visuals and interactive elements.
+- **Dynamic Menu**: Real-time category filtering and search.
+- **Smart Cart & Add-ons**: Customizable dish options with real-time price updates.
+- **Interactive Split Bill**: A unique, physics-based bill splitting animation for groups.
+- **Loyalty Program**: Tiered rewards and points tracking for returning guests.
+- **Table Booking**: Real-time availability checks and instant confirmation.
+
+### 2. 👨‍✈️ Captain's Command Dashboard
+A tactical interface for waitstaff to manage the floor efficiently.
+- **Live Order Tracking**: Instant notifications throughout the preparation lifecycle.
+- **Table Management**: Visual status indicators for every table in the house.
+- **Role-Based Access**: Secure login and flow optimized for rapid order taking.
+- **KOT Management**: Digital Kitchen Order Tickets for seamless kitchen communication.
+
+### 3. 📊 Admin Intelligence Suite
+The core brain of the operation, providing deep insights and control.
+- **Revenue Analytics**: Daily, weekly, and monthly financial performance tracking.
+- **Menu Orchestration**: Add, edit, or disable dishes and categories on the fly.
+- **Waitlist & Booking Management**: Centralized control over all guest reservations.
+- **Performance Metrics**: Identify top-performing dishes and peak hour trends.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+| :--- | :--- |
+| **Core** | React 18 + TypeScript |
+| **Build System** | Vite (Ultra-fast HMR) |
+| **Database/Auth** | Supabase (PostgreSQL with Real-time) |
+| **Styling** | Vanilla CSS + Tailwind + Framer Motion |
+| **UI Components** | Radix UI + shadcn/ui |
+| **State/Data** | TanStack Query + Zod Validation |
+
+---
+
+## 🚀 Key Innovations
+
+### 🎭 Animation & Interaction
+Leveraging `Framer Motion` for a "living" UI, including:
+- **Torn Receipt Animation**: A physics-based simulation when splitting bills.
+- **Glassmorphism Design**: High-end aesthetic with frosted glass effects and neon accents.
+- **Micro-interactions**: Hover states, smooth transitions, and tactile feedback.
+
+### ⚡ Real-time Synchronization
+Powered by Supabase Broadcast, ensuring that:
+- Captains see orders the second they are placed.
+- Kitchen status updates reflect instantly on the customer's phone.
+- Admin stats update without page refreshes.
+
+---
+
+## 📦 Getting Started
 
 ### Prerequisites
-
-- Node.js (v18 or higher)
-- npm or bun
+- **Node.js**: v18.0.0 or higher
+- **Supabase Account**: For database and authentication
 
 ### Installation
-
-1. Clone the repository:
+1. **Clone & Enter**
    ```bash
-   git clone <repository-url>
-   cd <project-directory>
+   git clone https://github.com/yourusername/spice-haven-pos.git
+   cd spice-haven-pos
    ```
 
-2. Install dependencies:
+2. **Install Dependencies**
    ```bash
    npm install
    ```
 
-3. Create a `.env` file in the root directory and add your Supabase credentials:
+3. **Environment Setup**
+   Create a `.env` file in the root:
    ```env
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_PUBLISHABLE_KEY=your_supabase_publishable_key
+   VITE_SUPABASE_URL=your_project_url
+   VITE_SUPABASE_ANON_KEY=your_anon_key
    ```
 
-4. Start the development server:
+4. **Launch**
    ```bash
    npm run dev
    ```
 
-## Project Structure
+---
 
-- `src/components`: Reusable UI components.
-- `src/pages`: Main application pages.
-- `src/hooks`: Custom React hooks.
-- `src/integrations`: Service integrations (e.g., Supabase).
-- `src/lib`: Utility functions and shared libraries.
+## 🗺️ Project Structure
 
-## License
+```text
+src/
+├── assets/          # High-fidelity food and brand assets
+├── components/      # Atomic UI units and composite layouts
+├── contexts/        # Auth, Cart, and Theme providers
+├── data/            # Mock schemas and static content
+├── lib/             # Utility functions and API clients
+├── pages/           # Portal-specific route components
+│   ├── admin/       # Intelligence suite
+│   ├── captain/     # Staff dashboard
+│   └── customer/    # Diner storefront
+└── types/           # Strict TypeScript interfaces
+```
 
-This project is licensed under the MIT License.
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+Developed with ❤️ for the future of hospitality.
+

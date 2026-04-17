@@ -3,11 +3,27 @@ import dimsumimg from '@/assets/food/dimsum.png';
 import burgerimg from '@/assets/food/burger.png';
 import cakeimg from '@/assets/food/cake.png';
 import cocktailimg from '@/assets/food/cocktail.png';
+import paneerTikkaImg from '@/assets/food/paneer-tikka.png';
+import chickenTikkaImg from '@/assets/food/chicken-tikka.png';
+import butterChickenImg from '@/assets/food/butter-chicken.png';
+import dalMakhaniImg from '@/assets/food/dal-makhani.png';
+import hyderabadiBiryaniImg from '@/assets/food/hyderabadi-biryani.png';
+import vegBiryaniImg from '@/assets/food/veg-biryani.png';
+import gulabJamunImg from '@/assets/food/gulab-jamun.png';
+import mangoLassiImg from '@/assets/food/mango-lassi.png';
+import muttonKebabImg from '@/assets/food/mutton-kebab.png';
+import fishFingersImg from '@/assets/food/fish-fingers.png';
+import tandooriPrawnsImg from '@/assets/food/tandoori-prawns.png';
+import lambRoganJoshImg from '@/assets/food/lamb-rogan-josh.png';
+import fishCurryImg from '@/assets/food/fish-curry.png';
+import chickenChettinadImg from '@/assets/food/chicken-chettinad.png';
+import muttonBiryaniImg from '@/assets/food/mutton-biryani.png';
+import prawnBiryaniImg from '@/assets/food/prawn-biryani.png';
 
 export const categories: Category[] = [
-  { id: '1', name: 'Starters', icon: '🥗', count: 12 },
-  { id: '2', name: 'Main Course', icon: '🍛', count: 18 },
-  { id: '3', name: 'Biryani', icon: '🍚', count: 8 },
+  { id: '1', name: 'Starters', icon: '🥗', count: 15 },
+  { id: '2', name: 'Main Course', icon: '🍛', count: 21 },
+  { id: '3', name: 'Biryani', icon: '🍚', count: 10 },
   { id: '4', name: 'Desserts', icon: '🍨', count: 10 },
   { id: '5', name: 'Beverages', icon: '🥤', count: 15 },
   { id: '6', name: 'Breads', icon: '🫓', count: 6 },
@@ -67,7 +83,7 @@ export const menuItems: MenuItem[] = [
     name: 'Paneer Tikka Royale',
     description: 'Succulent cottage cheese cubes marinated in aromatic spices and grilled to perfection',
     price: 320,
-    image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&h=300&fit=crop',
+    image: paneerTikkaImg,
     category: 'Starters',
     isVeg: true,
     isAvailable: true,
@@ -78,7 +94,7 @@ export const menuItems: MenuItem[] = [
     name: 'Chicken Tikka Smokey',
     description: 'Tender chicken pieces marinated in yogurt and spices, chargrilled in tandoor',
     price: 380,
-    image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop',
+    image: chickenTikkaImg,
     category: 'Starters',
     isVeg: false,
     isAvailable: true,
@@ -89,7 +105,7 @@ export const menuItems: MenuItem[] = [
     name: 'Butter Chicken Classic',
     description: 'Creamy tomato-based curry with tender chicken pieces, a true classic',
     price: 420,
-    image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=300&fit=crop',
+    image: butterChickenImg,
     category: 'Main Course',
     isVeg: false,
     isAvailable: true,
@@ -100,7 +116,7 @@ export const menuItems: MenuItem[] = [
     name: 'Dal Makhani Velvet',
     description: 'Black lentils slow-cooked overnight with cream and butter',
     price: 280,
-    image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop',
+    image: dalMakhaniImg,
     category: 'Main Course',
     isVeg: true,
     isAvailable: true,
@@ -111,7 +127,7 @@ export const menuItems: MenuItem[] = [
     name: 'Hyderabadi Dum Biryani',
     description: 'Fragrant basmati rice layered with spiced meat and saffron',
     price: 450,
-    image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop',
+    image: hyderabadiBiryaniImg,
     category: 'Biryani',
     isVeg: false,
     isAvailable: true,
@@ -122,7 +138,7 @@ export const menuItems: MenuItem[] = [
     name: 'Veg Dum Biryani',
     description: 'Aromatic rice with seasonal vegetables and exotic spices',
     price: 350,
-    image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&h=300&fit=crop',
+    image: vegBiryaniImg,
     category: 'Biryani',
     isVeg: true,
     isAvailable: true,
@@ -133,7 +149,7 @@ export const menuItems: MenuItem[] = [
     name: 'Gulab Jamun Trio',
     description: 'Soft milk dumplings soaked in rose-flavored sugar syrup',
     price: 120,
-    image: 'https://images.unsplash.com/photo-1666190101119-57a4abb2bab6?w=400&h=300&fit=crop',
+    image: gulabJamunImg,
     category: 'Desserts',
     isVeg: true,
     isAvailable: true,
@@ -144,13 +160,102 @@ export const menuItems: MenuItem[] = [
     name: 'Mango Lassi Silk',
     description: 'Refreshing yogurt drink blended with sweet alphonso mangoes',
     price: 150,
-    image: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=400&h=300&fit=crop',
+    image: mangoLassiImg,
     category: 'Beverages',
     isVeg: true,
     isAvailable: true,
     rating: 4.7,
   },
+  {
+    id: '13',
+    name: 'Mutton Seekh Kebab',
+    description: 'Traditional minced lamb skewers spiced with hand-ground masalas',
+    price: 420,
+    image: muttonKebabImg,
+    category: 'Starters',
+    isVeg: false,
+    isAvailable: true,
+    rating: 4.9,
+  },
+  {
+    id: '14',
+    name: 'Crispy Fish Fingers',
+    description: 'Crumb-fried sea bass fillets served with spicy tartare sauce',
+    price: 380,
+    image: fishFingersImg,
+    category: 'Starters',
+    isVeg: false,
+    isAvailable: true,
+    rating: 4.7,
+  },
+  {
+    id: '15',
+    name: 'Tandoori Jumbo Prawns',
+    description: 'King prawns marinated in mustard oil and hung curd, roasted in clay oven',
+    price: 550,
+    image: tandooriPrawnsImg,
+    category: 'Starters',
+    isVeg: false,
+    isAvailable: true,
+    rating: 4.9,
+  },
+  {
+    id: '16',
+    name: 'Lamb Rogan Josh',
+    description: 'Kashmiri style slow-cooked lamb in a rich tomato and ginger gravy',
+    price: 520,
+    image: lambRoganJoshImg,
+    category: 'Main Course',
+    isVeg: false,
+    isAvailable: true,
+    rating: 4.9,
+  },
+  {
+    id: '17',
+    name: 'Goan Fish Curry',
+    description: 'Traditional coconut-based tangy curry with fresh catch of the day',
+    price: 480,
+    image: fishCurryImg,
+    category: 'Main Course',
+    isVeg: false,
+    isAvailable: true,
+    rating: 4.8,
+  },
+  {
+    id: '18',
+    name: 'Chicken Chettinad',
+    description: 'Fiery South Indian chicken curry with roasted spices and coconut',
+    price: 450,
+    image: chickenChettinadImg,
+    category: 'Main Course',
+    isVeg: false,
+    isAvailable: true,
+    rating: 4.8,
+  },
+  {
+    id: '19',
+    name: 'Lucknowi Mutton Biryani',
+    description: 'Royal Awadhi style mild biryani with melt-in-the-mouth lamb pieces',
+    price: 580,
+    image: muttonBiryaniImg,
+    category: 'Biryani',
+    isVeg: false,
+    isAvailable: true,
+    rating: 5.0,
+  },
+  {
+    id: '20',
+    name: 'Prawn Dum Biryani',
+    description: 'Fragrant rice cooked with spicy prawns and fresh herbs in dum style',
+    price: 550,
+    image: prawnBiryaniImg,
+    category: 'Biryani',
+    isVeg: false,
+    isAvailable: true,
+    rating: 4.9,
+  },
 ];
+
 
 export const sampleOrders: Order[] = [
   {
