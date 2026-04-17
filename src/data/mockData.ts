@@ -1,4 +1,8 @@
 import { MenuItem, Category, Order, TableBooking } from '@/types';
+import dimsumimg from '@/assets/food/dimsum.png';
+import burgerimg from '@/assets/food/burger.png';
+import cakeimg from '@/assets/food/cake.png';
+import cocktailimg from '@/assets/food/cocktail.png';
 
 export const categories: Category[] = [
   { id: '1', name: 'Starters', icon: '🥗', count: 12 },
@@ -12,7 +16,55 @@ export const categories: Category[] = [
 export const menuItems: MenuItem[] = [
   {
     id: '1',
-    name: 'Paneer Tikka',
+    name: '3D Crystal Dim Sum',
+    description: 'Bespoke crystal-skin dumplings with savory filling, rendered in 3D for your eyes first.',
+    price: 450,
+    image: dimsumimg,
+    category: 'Starters',
+    isVeg: true,
+    isAvailable: true,
+    rating: 4.9,
+    addons: [
+      { id: 'a1', name: 'Extra Cheese Dip', price: 50 },
+      { id: 'a2', name: 'Chili Oil', price: 20 },
+    ],
+  },
+  {
+    id: '2',
+    name: 'The Monstrous Burger',
+    description: 'A structural marvel of melted cheese and premium beef, floating with flavor.',
+    price: 580,
+    image: burgerimg,
+    category: 'Main Course',
+    isVeg: false,
+    isAvailable: true,
+    rating: 5.0,
+  },
+  {
+    id: '3',
+    name: 'Molten Gold Lava Cake',
+    description: 'Dark chocolate core with real gold-flecked surface, served warm.',
+    price: 320,
+    image: cakeimg,
+    category: 'Desserts',
+    isVeg: true,
+    isAvailable: true,
+    rating: 4.8,
+  },
+  {
+    id: '4',
+    name: 'Signature Crystal Cocktail',
+    description: 'A masterclass in mixology with hand-carved crystal ice.',
+    price: 490,
+    image: cocktailimg,
+    category: 'Beverages',
+    isVeg: true,
+    isAvailable: true,
+    rating: 4.9,
+  },
+  {
+    id: '5',
+    name: 'Paneer Tikka Royale',
     description: 'Succulent cottage cheese cubes marinated in aromatic spices and grilled to perfection',
     price: 320,
     image: 'https://images.unsplash.com/photo-1567188040759-fb8a883dc6d8?w=400&h=300&fit=crop',
@@ -20,14 +72,10 @@ export const menuItems: MenuItem[] = [
     isVeg: true,
     isAvailable: true,
     rating: 4.8,
-    addons: [
-      { id: 'a1', name: 'Extra Cheese', price: 50 },
-      { id: 'a2', name: 'Mint Chutney', price: 20 },
-    ],
   },
   {
-    id: '2',
-    name: 'Chicken Tikka',
+    id: '6',
+    name: 'Chicken Tikka Smokey',
     description: 'Tender chicken pieces marinated in yogurt and spices, chargrilled in tandoor',
     price: 380,
     image: 'https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?w=400&h=300&fit=crop',
@@ -37,8 +85,8 @@ export const menuItems: MenuItem[] = [
     rating: 4.9,
   },
   {
-    id: '3',
-    name: 'Butter Chicken',
+    id: '7',
+    name: 'Butter Chicken Classic',
     description: 'Creamy tomato-based curry with tender chicken pieces, a true classic',
     price: 420,
     image: 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=400&h=300&fit=crop',
@@ -48,8 +96,8 @@ export const menuItems: MenuItem[] = [
     rating: 4.9,
   },
   {
-    id: '4',
-    name: 'Dal Makhani',
+    id: '8',
+    name: 'Dal Makhani Velvet',
     description: 'Black lentils slow-cooked overnight with cream and butter',
     price: 280,
     image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400&h=300&fit=crop',
@@ -59,8 +107,8 @@ export const menuItems: MenuItem[] = [
     rating: 4.7,
   },
   {
-    id: '5',
-    name: 'Hyderabadi Biryani',
+    id: '9',
+    name: 'Hyderabadi Dum Biryani',
     description: 'Fragrant basmati rice layered with spiced meat and saffron',
     price: 450,
     image: 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop',
@@ -70,8 +118,8 @@ export const menuItems: MenuItem[] = [
     rating: 4.9,
   },
   {
-    id: '6',
-    name: 'Veg Biryani',
+    id: '10',
+    name: 'Veg Dum Biryani',
     description: 'Aromatic rice with seasonal vegetables and exotic spices',
     price: 350,
     image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=400&h=300&fit=crop',
@@ -81,8 +129,8 @@ export const menuItems: MenuItem[] = [
     rating: 4.6,
   },
   {
-    id: '7',
-    name: 'Gulab Jamun',
+    id: '11',
+    name: 'Gulab Jamun Trio',
     description: 'Soft milk dumplings soaked in rose-flavored sugar syrup',
     price: 120,
     image: 'https://images.unsplash.com/photo-1666190101119-57a4abb2bab6?w=400&h=300&fit=crop',
@@ -92,8 +140,8 @@ export const menuItems: MenuItem[] = [
     rating: 4.8,
   },
   {
-    id: '8',
-    name: 'Mango Lassi',
+    id: '12',
+    name: 'Mango Lassi Silk',
     description: 'Refreshing yogurt drink blended with sweet alphonso mangoes',
     price: 150,
     image: 'https://images.unsplash.com/photo-1527661591475-527312dd65f5?w=400&h=300&fit=crop',

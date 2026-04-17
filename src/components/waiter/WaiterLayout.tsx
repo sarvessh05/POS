@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ClipboardList, Bell, User, LogOut } from 'lucide-react';
+import Logo from '@/components/ui/logo';
 
 interface WaiterLayoutProps {
   children: ReactNode;
@@ -20,19 +21,17 @@ const WaiterLayout = ({ children }: WaiterLayoutProps) => {
       {/* Header */}
       <header className="bg-sidebar text-sidebar-foreground sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-sidebar-primary flex items-center justify-center">
-              <span className="text-xl">🍽️</span>
-            </div>
+          <div className="flex items-center gap-4">
+            <Logo showText={false} imageClassName="w-11 h-11" />
             <div>
-              <h1 className="font-display text-lg font-semibold text-sidebar-primary-foreground">
+              <h1 className="font-display text-lg font-semibold text-sidebar-primary-foreground leading-tight">
                 Waiter Panel
               </h1>
-              <p className="text-xs text-sidebar-foreground/60">Spice Haven</p>
+              <p className="text-[10px] uppercase tracking-widest text-sidebar-foreground/40 font-bold">Spice Haven</p>
             </div>
           </div>
-          <button className="w-10 h-10 rounded-xl bg-sidebar-accent flex items-center justify-center hover:bg-sidebar-primary transition-colors">
-            <LogOut className="w-5 h-5" />
+          <button className="w-10 h-10 rounded-xl bg-sidebar-accent flex items-center justify-center hover:bg-sidebar-primary transition-colors group">
+            <LogOut className="w-5 h-5 group-hover:text-white transition-colors" />
           </button>
         </div>
       </header>

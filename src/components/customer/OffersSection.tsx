@@ -27,8 +27,8 @@ const offers = [
 
 const OffersSection = () => {
   return (
-    <section className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section className="py-24 bg-background overflow-hidden">
+      <div className="container mx-auto px-4 max-w-7xl">
         <div className="text-center mb-12">
           <span className="text-primary font-medium text-sm uppercase tracking-wider">
             Special Offers
@@ -52,8 +52,7 @@ const OffersSection = () => {
                 </h3>
                 <p className="text-background/80 mb-4">{offer.description}</p>
                 <Button
-                  variant="outline"
-                  className="border-background/30 text-background hover:bg-background/20 hover:text-background"
+                  className="bg-white/20 hover:bg-white/30 border-white/30 text-white font-bold rounded-xl backdrop-blur-sm shadow-none"
                 >
                   Claim Offer
                 </Button>

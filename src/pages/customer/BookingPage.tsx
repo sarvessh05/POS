@@ -10,6 +10,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
+import { useBookTable } from '@/hooks/useDatabase';
 
 const timeSlots = [
   '11:00 AM', '11:30 AM', '12:00 PM', '12:30 PM', '1:00 PM', '1:30 PM',
@@ -24,14 +25,29 @@ const BookingPage = () => {
   const [phone, setPhone] = useState('');
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const bookTable = useBookTable();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!date || !timeSlot || !name || !phone) {
       toast.error('Please fill in all fields');
       return;
     }
-    setIsSuccess(true);
-    toast.success('Table booked successfully!');
+    
+    try {
+      await bookTable.mutateAsync({
+        customer_name: name,
+        customer_phone: phone,
+        booking_date: format(date, 'yyyy-MM-dd'),
+        time_slot: timeSlot,
+        guests: parseInt(guests),
+      });
+      setIsSuccess(true);
+      toast.success('Table booked successfully!');
+    } catch (error) {
+      console.error('Booking error:', error);
+      toast.error('Failed to book table. Please try again.');
+    }
   };
 
   if (isSuccess) {

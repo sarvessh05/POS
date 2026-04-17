@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
-import { menuItems as initialMenuItems, categories } from '@/data/mockData';
+import { useMenuItems, useCategories } from '@/hooks/useDatabase';
 import { MenuItem } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
-import { Plus, Search, Edit, Trash2, Star } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Star, Loader2 } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 import {
   Table,
   TableBody,
@@ -16,21 +19,30 @@ import {
 } from '@/components/ui/table';
 
 const AdminMenu = () => {
-  const [items, setItems] = useState<MenuItem[]>(initialMenuItems);
   const [searchQuery, setSearchQuery] = useState('');
+  const { data: menuItems, isLoading } = useMenuItems();
+  const queryClient = useQueryClient();
 
-  const filteredItems = items.filter(
-    (item) =>
+  const filteredItems = menuItems?.filter(
+    (item: any) =>
       item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      item.categories?.name.toLowerCase().includes(searchQuery.toLowerCase())
+  ) || [];
 
-  const toggleAvailability = (id: string) => {
-    setItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, isAvailable: !item.isAvailable } : item
-      )
-    );
+  const toggleAvailability = async (id: string, currentStatus: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('menu_items')
+        .update({ is_exhausted: currentStatus }) // Inverting logic: isAvailable = !is_exhausted
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      queryClient.invalidateQueries({ queryKey: ['menu_items'] });
+      toast.success("Availability updated");
+    } catch (err) {
+      toast.error("Failed to update status");
+    }
   };
 
   return (
@@ -64,6 +76,12 @@ const AdminMenu = () => {
 
       {/* Menu Table */}
       <div className="bg-card rounded-2xl shadow-soft overflow-hidden">
+        {isLoading ? (
+            <div className="py-20 flex flex-col items-center gap-4">
+                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                <p className="text-xs font-black uppercase tracking-widest text-slate-300">Synchronizing Menu...</p>
+            </div>
+        ) : (
         <Table>
           <TableHeader>
             <TableRow>
@@ -76,12 +94,12 @@ const AdminMenu = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredItems.map((item) => (
+            {filteredItems.map((item: any) => (
               <TableRow key={item.id}>
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <img
-                      src={item.image}
+                      src={item.image_url || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100'}
                       alt={item.name}
                       className="w-12 h-12 rounded-lg object-cover"
                     />
@@ -90,13 +108,13 @@ const AdminMenu = () => {
                       <div className="flex items-center gap-1">
                         <span
                           className={`w-3 h-3 rounded-sm flex items-center justify-center ${
-                            item.isVeg ? 'bg-sage' : 'bg-destructive'
+                            item.is_veg ? 'bg-sage' : 'bg-destructive'
                           }`}
                         >
                           <span className="w-1.5 h-1.5 rounded-full bg-card" />
                         </span>
                         <span className="text-xs text-muted-foreground">
-                          {item.isVeg ? 'Veg' : 'Non-veg'}
+                          {item.is_veg ? 'Veg' : 'Non-veg'}
                         </span>
                       </div>
                     </div>
@@ -104,22 +122,20 @@ const AdminMenu = () => {
                 </TableCell>
                 <TableCell>
                   <span className="px-3 py-1 rounded-full bg-muted text-muted-foreground text-sm">
-                    {item.category}
+                    {item.categories?.name}
                   </span>
                 </TableCell>
                 <TableCell className="font-medium">₹{item.price}</TableCell>
                 <TableCell>
-                  {item.rating && (
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-gold text-gold" />
-                      <span>{item.rating}</span>
-                    </div>
-                  )}
+                  <div className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-gold text-gold" />
+                    <span>{item.rating || '4.5'}</span>
+                  </div>
                 </TableCell>
                 <TableCell>
                   <Switch
-                    checked={item.isAvailable}
-                    onCheckedChange={() => toggleAvailability(item.id)}
+                    checked={!item.is_exhausted}
+                    onCheckedChange={(checked) => toggleAvailability(item.id, !checked)}
                   />
                 </TableCell>
                 <TableCell className="text-right">
@@ -136,6 +152,7 @@ const AdminMenu = () => {
             ))}
           </TableBody>
         </Table>
+        )}
       </div>
     </AdminLayout>
   );

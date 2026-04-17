@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowLeft, Minus, Plus, Trash2, Tag, ShoppingBag } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { ArrowLeft, Minus, Plus, Trash2, Tag, ShoppingBag, Loader2 } from 'lucide-react';
 import Navbar from '@/components/customer/Navbar';
 import Footer from '@/components/customer/Footer';
 import { Button } from '@/components/ui/button';
@@ -8,21 +8,48 @@ import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useCart } from '@/contexts/CartContext';
+import { useTable } from '@/contexts/TableContext';
+import { usePlaceOrder, useTaxConfig } from '@/hooks/useDatabase';
 import { toast } from 'sonner';
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const { items, totalAmount, updateQuantity, removeItem, clearCart } = useCart();
-  const [orderType, setOrderType] = useState<'dine-in' | 'takeaway'>('dine-in');
-  const [tableNumber, setTableNumber] = useState('');
+  const { session } = useTable();
+  const [orderType, setOrderType] = useState<'dine-in' | 'takeaway'>(session ? 'dine-in' : 'takeaway');
+  const [tableNumber, setTableNumber] = useState(session?.tableNumber?.toString() || '');
   const [couponCode, setCouponCode] = useState('');
+  const [isPlacing, setIsPlacing] = useState(false);
+  const { mutateAsync: placeOrder } = usePlaceOrder();
+  const { data: taxConfig } = useTaxConfig();
+  
+  const gstRate = taxConfig?.gst_rate || 5;
+  const taxAmount = Math.round(totalAmount * (gstRate / 100));
+  const finalTotal = totalAmount + taxAmount;
 
-  const handlePlaceOrder = () => {
+  const handlePlaceOrder = async () => {
     if (orderType === 'dine-in' && !tableNumber) {
       toast.error('Please enter your table number');
       return;
     }
-    toast.success('Order placed successfully!');
-    clearCart();
+    
+    setIsPlacing(true);
+    try {
+        await placeOrder({
+            order_type: orderType,
+            table_number: tableNumber,
+            total_amount: finalTotal,
+            items: items
+        });
+        
+        toast.success('Order placed successfully!');
+        clearCart();
+        navigate('/menu');
+    } catch (err: any) {
+        toast.error(err.message || 'Failed to place order');
+    } finally {
+        setIsPlacing(false);
+    }
   };
 
   if (items.length === 0) {
@@ -196,15 +223,15 @@ const CartPage = () => {
                   <span>₹{totalAmount}</span>
                 </div>
                 <div className="flex justify-between text-muted-foreground">
-                  <span>Taxes (5%)</span>
-                  <span>₹{Math.round(totalAmount * 0.05)}</span>
+                  <span>Taxes ({gstRate}%)</span>
+                  <span>₹{taxAmount}</span>
                 </div>
               </div>
 
               <div className="flex justify-between text-lg font-semibold text-foreground py-4">
                 <span>Total</span>
                 <span className="font-display text-primary">
-                  ₹{Math.round(totalAmount * 1.05)}
+                  ₹{finalTotal}
                 </span>
               </div>
 
@@ -213,8 +240,14 @@ const CartPage = () => {
                 size="lg"
                 className="w-full"
                 onClick={handlePlaceOrder}
+                disabled={isPlacing}
               >
-                Place Order
+                {isPlacing ? (
+                    <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Processing...
+                    </>
+                ) : 'Place Order'}
               </Button>
             </div>
           </div>

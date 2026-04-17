@@ -1,27 +1,23 @@
 import { useState } from 'react';
 import AdminLayout from '@/components/admin/AdminLayout';
 import OrderCard from '@/components/admin/OrderCard';
-import { sampleOrders } from '@/data/mockData';
+import { useAllOrders, useUpdateOrderStatus } from '@/hooks/useDatabase';
 import { Order, OrderStatus } from '@/types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Loader2 } from 'lucide-react';
 
 const AdminOrders = () => {
-  const [orders, setOrders] = useState<Order[]>(sampleOrders);
+  const [activeTab, setActiveTab] = useState<OrderStatus | 'all'>('all');
+  const { data: allOrders, isLoading } = useAllOrders();
+  const { mutateAsync: updateStatus } = useUpdateOrderStatus();
 
-  const handleStatusChange = (orderId: string, newStatus: OrderStatus) => {
-    setOrders((prev) =>
-      prev.map((order) =>
-        order.id === orderId
-          ? { ...order, status: newStatus, updatedAt: new Date() }
-          : order
-      )
-    );
+  const handleStatusChange = async (orderId: string, newStatus: OrderStatus) => {
+    await updateStatus({ orderId, status: newStatus });
   };
 
-  const filterByStatus = (status: OrderStatus | 'all') => {
-    if (status === 'all') return orders;
-    return orders.filter((o) => o.status === status);
-  };
+  const filteredOrders = allOrders?.filter((o: any) => 
+    activeTab === 'all' ? true : o.status === activeTab
+  ) || [];
 
   return (
     <AdminLayout>
@@ -34,27 +30,31 @@ const AdminOrders = () => {
         </p>
       </div>
 
-      <Tabs defaultValue="all" className="w-full">
+      <Tabs defaultValue="all" onValueChange={(v) => setActiveTab(v as any)} className="w-full">
         <TabsList className="mb-6">
-          <TabsTrigger value="all">All ({orders.length})</TabsTrigger>
+          <TabsTrigger value="all">All ({allOrders?.length || 0})</TabsTrigger>
           <TabsTrigger value="pending">
-            Pending ({filterByStatus('pending').length})
+            Pending ({allOrders?.filter((o:any) => o.status === 'pending').length || 0})
           </TabsTrigger>
           <TabsTrigger value="preparing">
-            Preparing ({filterByStatus('preparing').length})
+            Preparing ({allOrders?.filter((o:any) => o.status === 'preparing').length || 0})
           </TabsTrigger>
           <TabsTrigger value="ready">
-            Ready ({filterByStatus('ready').length})
+            Ready ({allOrders?.filter((o:any) => o.status === 'ready').length || 0})
           </TabsTrigger>
           <TabsTrigger value="completed">
-            Completed ({filterByStatus('completed').length})
+            Completed ({allOrders?.filter((o:any) => o.status === 'completed').length || 0})
           </TabsTrigger>
         </TabsList>
 
-        {['all', 'pending', 'preparing', 'ready', 'completed'].map((status) => (
-          <TabsContent key={status} value={status}>
+        {isLoading ? (
+            <div className="py-20 flex flex-col items-center gap-4">
+                <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                <p className="text-xs font-black uppercase tracking-widest text-slate-300">Fetching live orders...</p>
+            </div>
+        ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filterByStatus(status as OrderStatus | 'all').map((order) => (
+              {filteredOrders.map((order: any) => (
                 <OrderCard
                   key={order.id}
                   order={order}
@@ -62,8 +62,7 @@ const AdminOrders = () => {
                 />
               ))}
             </div>
-          </TabsContent>
-        ))}
+        )}
       </Tabs>
     </AdminLayout>
   );

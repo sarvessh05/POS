@@ -6,6 +6,7 @@ interface CartContextType {
   addItem: (item: MenuItem, quantity?: number, addons?: Addon[]) => void;
   removeItem: (itemId: string) => void;
   updateQuantity: (itemId: string, quantity: number) => void;
+  updateInstructions: (itemId: string, instructions: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalAmount: number;
@@ -24,7 +25,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
           i.id === item.id ? { ...i, quantity: i.quantity + quantity } : i
         );
       }
-      return [...prev, { ...item, quantity, selectedAddons: addons }];
+      return [...prev, { ...item, quantity, selectedAddons: addons, specialInstructions: '' }];
     });
   };
 
@@ -39,6 +40,12 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     }
     setItems((prev) =>
       prev.map((item) => (item.id === itemId ? { ...item, quantity } : item))
+    );
+  };
+
+  const updateInstructions = (itemId: string, instructions: string) => {
+    setItems((prev) =>
+      prev.map((item) => (item.id === itemId ? { ...item, specialInstructions: instructions } : item))
     );
   };
 
@@ -60,6 +67,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         addItem,
         removeItem,
         updateQuantity,
+        updateInstructions,
         clearCart,
         totalItems,
         totalAmount,

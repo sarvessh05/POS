@@ -1,4 +1,5 @@
 import { Category } from '@/types';
+import { motion } from 'framer-motion';
 
 interface CategoryCardProps {
   category: Category;
@@ -10,19 +11,21 @@ const CategoryCard = ({ category, isActive, onClick }: CategoryCardProps) => {
   return (
     <button
       onClick={onClick}
-      className={`flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 min-w-[100px] ${
-        isActive
-          ? 'bg-primary text-primary-foreground shadow-medium scale-105'
-          : 'bg-card hover:bg-accent text-card-foreground hover:scale-[1.02]'
+      className={`relative px-8 py-3 rounded-full transition-colors duration-500 whitespace-nowrap font-bold text-sm tracking-tight z-10 ${
+        isActive ? 'text-foreground' : 'text-foreground/40 hover:text-foreground/60'
       }`}
     >
-      <span className="text-3xl">{category.icon}</span>
-      <span className="font-medium text-sm">{category.name}</span>
-      <span className={`text-xs ${isActive ? 'text-primary-foreground/80' : 'text-muted-foreground'}`}>
-        {category.count} items
-      </span>
+      {isActive && (
+        <motion.div
+          layoutId="activeCategory"
+          className="absolute inset-0 bg-[#f5c22c] rounded-full shadow-md -z-10"
+          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+        />
+      )}
+      {category.name}
     </button>
   );
 };
 
 export default CategoryCard;
+

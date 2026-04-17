@@ -1,20 +1,16 @@
 import { Link } from 'react-router-dom';
 import { Phone, Mail, MapPin, Instagram, Facebook, Twitter } from 'lucide-react';
+import Logo from '@/components/ui/logo';
 
 const Footer = () => {
   return (
-    <footer className="bg-charcoal text-background/80">
-      <div className="container mx-auto px-4 py-16">
+    <footer className="bg-[#121417] text-background/80 relative overflow-hidden">
+      <div className="container mx-auto px-4 py-16 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-10 h-10 rounded-full gradient-warm flex items-center justify-center">
-                <span className="text-xl">🍽️</span>
-              </div>
-              <span className="font-display text-xl font-semibold text-background">
-                Spice Haven
-              </span>
+            <div className="mb-4">
+              <Logo isDark={true} />
             </div>
             <p className="text-sm leading-relaxed mb-6">
               Experience the finest culinary journey with authentic flavors and modern elegance. Every dish is crafted with love.
@@ -104,8 +100,15 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-background/10 mt-12 pt-8 text-center text-sm">
-          <p>© 2024 Spice Haven. All rights reserved.</p>
+        <div className="border-t border-background/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-medium">
+          <p>© 2026 Spice Haven. All rights reserved.</p>
+          <p className="order-first md:order-none">
+            Built by <a href="https://www.sarveshghotekar.in" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-bold">Sarvesh Ghotekar</a>
+          </p>
+          <div className="flex gap-4 opacity-40 hover:opacity-100 transition-opacity">
+            <Link to="/login-captain" className="hover:text-primary">Staff Portal</Link>
+            <Link to="/admin-login" className="hover:text-primary">Management</Link>
+          </div>
         </div>
       </div>
     </footer>
