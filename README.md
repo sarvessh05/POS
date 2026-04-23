@@ -101,19 +101,30 @@ Powered by Supabase Broadcast, ensuring that:
 
 ## 🗺️ Project Structure
 
+Our codebase strictly follows **Clean Architecture** principles to separate business logic from UI components.
+
 ```text
 src/
 ├── assets/          # High-fidelity food and brand assets
-├── components/      # Atomic UI units and composite layouts
-├── contexts/        # Auth, Cart, and Theme providers
+├── components/      # Atomic UI units and composite layouts (Presentation)
+├── contexts/        # Auth, Cart, and Theme providers (Application)
 ├── data/            # Mock schemas and static content
-├── lib/             # Utility functions and API clients
-├── pages/           # Portal-specific route components
-│   ├── admin/       # Intelligence suite
-│   ├── captain/     # Staff dashboard
-│   └── customer/    # Diner storefront
-└── types/           # Strict TypeScript interfaces
+├── hooks/           # Business logic and queries (Application)
+├── lib/             # Utility functions and API clients (Domain)
+├── pages/           # Portal-specific route components (Presentation)
+├── services/        # Backend communication & Data Access (Infrastructure)
+└── types/           # Strict TypeScript interfaces (Domain)
 ```
+
+## 📚 Comprehensive Documentation
+
+For an in-depth understanding of the system, please refer to our dedicated `documents/` directory:
+
+- 🏛️ [Architecture & Design Docs](documents/Architecture_Design.md)
+- 🔌 [API Documentation](documents/API_Documentation.md)
+- 💻 [Code Documentation](documents/Code_Documentation.md)
+- 🧪 [Testing Documentation](documents/Testing_Documentation.md)
+- 📄 [LICENSE](documents/LICENSE.md)
 
 ---
 

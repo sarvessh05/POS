@@ -53,7 +53,7 @@ const CaptainDashboard = () => {
     const channel = supabase
       .channel('captain_realtime')
       .on('postgres_changes', { event: 'INSERT', table: 'orders' }, () => {
-        notificationSound.play().catch(e => console.log('Audio play failed', e));
+        notificationSound.play().catch(e => console.error('Audio play failed', e));
         refetch();
       })
       .on('postgres_changes', { event: 'UPDATE', table: 'tables' }, () => {
